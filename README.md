@@ -8,6 +8,8 @@ In this Course, you'll learn how to use `git` and cover 80% of daily basis usage
 
 ## Prerequisites
 
+- an account at github.com
+- add a ssh key to <https://github.com/settings/keys>
 - a terminal
 - `git`
 
@@ -48,104 +50,33 @@ git push -u origin main
 
 </details>
 
-Now, find how to change the remote URL of your repository
+### Commits
+
+#### Setting Author name and email
+
+Define Author name and email via the `git` CLI.
+
+Find via the `git` CLI how to
+
+- [ ] Set this parameter for the specific repo
+- [ ] Set this parameter globally
 
 <details>
 <summary>Solution</summary>
 
 ```bash
-git remote set-url origin <URL>
+# Changing Your Committer Name & Email per Repository
+
+$ git config user.name "John Doe"
+$ git config user.email "john@doe.org"
+
+# Changing Your Committer Name & Email Globally
+
+$ git config --global user.name "John Doe"
+$ git config --global user.email "john@doe.org"
 ```
 
 </details>
-
-### Commits
-
-#### Setting Author and Commiter name and email
-
-There are two methods to define Author and Committer name and email.
-One is via the `git` CLI, the other is via environment variables.
-
-1. Find via the `git` CLI how to
-
-   - [ ] Set this parameter for the specific repo
-   - [ ] Set this parameter globally
-
-    <details>
-    <summary>Solution</summary>
-
-    ```bash
-    # Changing Your Committer Name & Email per Repository
-
-    $ git config user.name "John Doe"
-    $ git config user.email "john@doe.org"
-
-    # Changing Your Committer Name & Email Globally
-
-    $ git config --global user.name "John Doe"
-    $ git config --global user.email "john@doe.org"
-    ```
-
-    </details>
-
-2. Find the common variables used by git
-
-    <details>
-    <summary>Hint</summary>
-    Environment variables are in CAPS_SNAKE_CASE and for our case, they are prefixed by `GIT_`.
-    </details>
-
-    <details>
-    <summary>Solution</summary>
-
-    - GIT_AUTHOR_NAME
-    - GIT_AUTHOR_EMAIL
-    - GIT_COMMITTER_NAME
-    - GIT_COMMITTER_EMAIL
-
-    </details>
-
-    You may be wondering what the difference is between author and committer. The author is the person who originally wrote the patch, whereas the committer is the person who last applied the patch. So, if you send in a patch to a project and one of the core members applies the patch, both of you get credit — you as the author and the core member as the committer.
-
-    <details>
-    <summary>Bonus : Use <code>direnv</code></summary>
-    I recommend using environment variables alongside direnv to to this as it allows me to set different values for bunch of repos.
-
-    Let's install [direnv](https://direnv.net/)
-
-    ```bash
-    brew install direnv
-    ```
-
-    Then we add the hook that will handle loading and unloading env vars
-
-    ```bash
-    # For Bash
-    # Add the following line at the end of the ~/.bashrc file:
-    eval "$(direnv hook bash)"
-
-    # For Zsh
-    # Add the following line at the end of the ~/.zshrc file:
-    eval "$(direnv hook zsh)"
-
-    # Reload your SHELL
-    exec $SHELL
-    ```
-
-    Finally, create a `.envrc` in the directory where you want to load your env vars like this
-
-    ```bash
-    # .envrc
-    export TEST_VAR=foo
-    ```
-
-    Allow `direnv` to read and execute the file
-
-    ```bash
-    direnv allow .
-    ```
-
-    </details>
 
 #### Commit messages
 
@@ -178,7 +109,7 @@ Here, let's play with branches. Branching means you diverge from the main line o
 
 [![Git Branching Exemple](https://git-scm.com/book/en/v2/images/basic-merging-2.png)](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
 
-- [ ] 1. Clone a repo
+- [ ] 1. In your cloned repo
 - [ ] 2. Create a new branch
 - [ ] 3. Switch to that branch
 - [ ] 4. Push this branch to the remote
@@ -216,9 +147,34 @@ git branch -d another_new_branch_name
 
 </details>
 
+#### Review your code before pushing
+
+Here we'll see how to show differences at each git step before pushing to the remote repo.
+
+Find out how to
+
+- [ ] 1. Show differences before staging files (before `git add`)
+- [ ] 2. Show differences between staged files and origin (before `git commit`)
+- [ ] 3. Show differences between committed files and origin (before `git push`)
+
+<details>
+<summary>Solution</summary>
+
+```shell
+# Edit files then
+git diff
+# Add files with git add then
+git diff --cached
+# git commit changes then
+git diff origin
+# Finally, you can git push
+```
+
+</details>
+
 ### Merge Requests
 
-Merging is the action to add all the commits from a source branch to a destination branch
+Merging is the action to add all the commits from a source branch to a destination branch.
 
 <details>
 <summary>Solution</summary>
@@ -237,26 +193,7 @@ Merging is the action to add all the commits from a source branch to a destinati
 
 This article sums up some good tips for reviewers <https://mtlynch.io/code-review-love/>
 
-#### Open source Merge Request
-
-Can you find out the little difference there is between your repository and public repositories ?
-
-<details>
-<summary>Hint</summary>
-The difference resides in pushing rights and there is a keyword associated to open source contributing
-</details>
-
-<details>
-<summary>Solution</summary>
-Just a few people can push code and branches directly to public repositories.
-
-In order to collaborate and suggest a change, you'll have to <b>fork</b> the public repository.
-
-This action will make a full copy of the repository in your personal space.
-
-Then you'll be able to push some modifications and when it's tested and ready to be merged into the public repo,
-you need to open a Merge Request on the public repo with source: your_repo/your_branch and destination: public_repo/main
-</details>
+> :raised_hand: Tag a reviewer that is in another group. Continue with code of the other team after break time.
 
 ### Stashing
 
@@ -332,23 +269,4 @@ git push --force
 # --force is needed as we changed the history and we'll erase old commits
 ```
 
-</details>
-
-### Patching
-
-It's informational, we don't use patching that much but sometimes you may need to send your changes as a file.
-The way to do it is to create a patch from a commit.
-
-Find commands to
-
-- [ ] 1. create a patch from the last commit
-- [ ] 2. apply the patch
-
-<details>
-<summary>Solution</summary>
-
-```bash
-git format-patch HEAD^
-git am patch_file
-```
 </details>
